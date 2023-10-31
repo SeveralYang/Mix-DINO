@@ -188,7 +188,9 @@ class BaseTransformerLayer(nn.Module):
             elif layer == "ffn":
                 query = self.ffns[ffn_index](query, identity if self.pre_norm else None)
                 ffn_index += 1
-
+            elif layer == "customffn":
+                query = self.ffns[ffn_index](query)
+                ffn_index +=1
         return query
 
 
