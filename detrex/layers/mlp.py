@@ -55,6 +55,38 @@ class MLP(nn.Module):
         return x
 
 
+class MixFFN(nn.Module):
+    def __init__(
+        self, input_dim: int, hidden_dim: int, output_dim: int, num_layers: int
+    ) -> torch.Tensor:
+        super().__init__()
+        self.mlp1 = MLP(
+            input_dim=input_dim,
+            hidden_dim=hidden_dim,
+            output_dim=output_dim,
+            num_layers=num_layers,
+        )
+        self.mlp2 = MLP(
+            input_dim=input_dim,
+            hidden_dim=hidden_dim,
+            output_dim=output_dim,
+            num_layers=num_layers,
+        )
+        self.gelu = nn.GELU()
+        self.conv = nn.Conv2d(
+            in_channels=256, out_channels=256, kernel_size=(3, 3), stride=1, padding=1
+        )
+
+    def forward(self, x):
+        tem = self.mlp1(
+            self.gelu(
+                self.conv(
+                    self.mlp2(x).unsqueeze(0).permute(0, 3, 1, 2)
+                ).squeeze(0)
+            ).permute(1, 2, 0)
+        )
+        return tem + x
+
 class FFN(nn.Module):
     """The implementation of feed-forward networks (FFNs)
     with identity connection.
