@@ -8,4 +8,4 @@
 3 run ```python tools/train_net.py 
 --eval 
 --config-file path_to_config 
---num-gpus 1train.init_checkpoint="path_to_pth"``` to evlauate
+--num-gpus 1 train.init_checkpoint="path_to_pth"``` to evlauate
