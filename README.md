@@ -1,4 +1,4 @@
-1 Follow DETREX to build the env\
+1 Follow DETREX to build the env
 
 
 2 run ```python tools/train_net.py
